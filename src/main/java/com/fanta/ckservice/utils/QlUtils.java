@@ -29,13 +29,13 @@ public class QlUtils {
     public void checkState(String rs) {
         JSONObject jsonObject = JSONUtil.parseObj(rs);
         Object message = jsonObject.get("message");
-        if (message!=null && message.toString().contains("SequelizeUniqueConstraintError")){
+        if (message != null && message.toString().contains("SequelizeUniqueConstraintError")) {
             throw new QingLongException(400, "Cookie已存在");
         }
         String code = jsonObject.get("code").toString();
         if (!Objects.equals(code, "200")) {
-            log.error("服务器异常");
-            throw new QingLongException(500, "服务器异常");
+            log.error("服务器异常code:{}", code);
+            throw new QingLongException(500, "服务器异常，请重试");
         }
     }
 
@@ -62,13 +62,13 @@ public class QlUtils {
 
     public EnvInfo addEnv(EnvInfo envInfo) {
         String authorizationValue = String.format("Bearer %s", getToken());
-        JSONObject obj = JSONUtil.createObj();
-        obj.set("name", envInfo.getName());
-        obj.set("value", envInfo.getValue());
-        obj.set("remarks", envInfo.getRemarks());
-        List<Object> list = new ArrayList<>();
-        list.add(obj);
-        String body2 = list.toString();
+//        JSONObject obj = JSONUtil.createObj();
+//        obj.set("name", envInfo.getName());
+//        obj.set("value", envInfo.getValue());
+//        obj.set("remarks", envInfo.getRemarks());
+//        List<Object> list = new ArrayList<>();
+//        list.add(obj);
+//        String body2 = list.toString();
         String body = String.format("[{\"name\":\"%s\",\"value\":\"%s\",\"remarks\":\"%s\"}]", envInfo.getName(), envInfo.getValue(), envInfo.getRemarks());
         String responseBody = HttpUtil.createPost(GLOBAL_SERVER_URL + "/envs")
                 .header("authorization", authorizationValue)
