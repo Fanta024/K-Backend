@@ -6,10 +6,11 @@ public class QingLongException extends RuntimeException{
      */
     private final int code;
 
-    public QingLongException(int code,String message) {
+    public QingLongException(CodeEnum codeEnum, String message) {
         super(message);
-        this.code = code;
+        this.code = codeEnum.getCode();
     }
+
     public int getCode() {
         return code;
     }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+@Deprecated
 @RestController
 @RequestMapping("/email")
 public class EmailController {

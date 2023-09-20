@@ -6,6 +6,7 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.fanta.ckservice.common.CodeEnum;
 import com.fanta.ckservice.common.QingLongException;
 import com.fanta.ckservice.model.AuthInfo;
 import com.fanta.ckservice.model.EnvInfo;
@@ -30,12 +31,12 @@ public class QlUtils {
         JSONObject jsonObject = JSONUtil.parseObj(rs);
         Object message = jsonObject.get("message");
         if (message != null && message.toString().contains("SequelizeUniqueConstraintError")) {
-            throw new QingLongException(400, "Cookie已存在");
+            throw new QingLongException(CodeEnum.DUPLICATE_ERROR, "Cookie已存在");
         }
         String code = jsonObject.get("code").toString();
-        if (!Objects.equals(code, "200")) {
+        if (code != null && !Objects.equals(code, "200")) {
             log.error("服务器异常code:{}", code);
-            throw new QingLongException(500, "服务器异常，请重试");
+            throw new QingLongException(CodeEnum.SYSTEM_ERROR, "服务器异常，请重试");
         }
     }
 
