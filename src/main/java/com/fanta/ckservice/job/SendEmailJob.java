@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableScheduling
-public class sendEmailJob {
+public class SendEmailJob {
     @Resource
     private QlUtils qlUtils;
     @Resource
